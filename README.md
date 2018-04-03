@@ -1,1 +1,1 @@
-# Maya_Modeling_bsCreator
+# Maya_modeling_bsCreator
