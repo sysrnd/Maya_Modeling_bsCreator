@@ -19,10 +19,14 @@ class bsNamesBridge(object):
 
 		self.populateUI()
 
+		reg_ex = QtCore.QRegExp("[a-zA-Z_]+")
+		validator = QtGui.QRegExpValidator(reg_ex, self.window.txt_charName)
+		self.window.txt_charName.setValidator(validator)
 
 	def duplicate(self):
 		'''
 		'''
+
 		contador = self.core.main(self.bsList)
 		self.window.lbl_status.setText('Se duplicaron ' + str(contador) + ' blendshapes')
 		#self.core.getMainMesh()
@@ -30,11 +34,16 @@ class bsNamesBridge(object):
 	def populateUI(self):
 		'''
 		'''
+		#QlistWidgetBlock
+		self.window.list_bs.setSortingEnabled(True)
+		self.window.list_bs.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+		
 		for key, item in self.bsList.iteritems():
 			qtItem = QtWidgets.QListWidgetItem()
 			qtItem.setText(key)
 			self.window.list_bs.addItem(qtItem)
 
+	
 	def readLocalInfo(self, BSfile):
 		'''
 		'''
