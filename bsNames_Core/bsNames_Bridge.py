@@ -19,14 +19,13 @@ class bsNamesBridge(object):
 
 		self.populateUI()
 
-		reg_ex = QtCore.QRegExp("[a-zA-Z_]+")
+		reg_ex = QtCore.QRegExp("[a-zA-Z0-9_]+")
 		validator = QtGui.QRegExpValidator(reg_ex, self.window.txt_charName)
 		self.window.txt_charName.setValidator(validator)
 
 	def duplicate(self):
 		'''
 		'''
-
 		contador = self.core.main(self.bsList)
 		self.window.lbl_status.setText('Se duplicaron ' + str(contador) + ' blendshapes')
 		#self.core.getMainMesh()
