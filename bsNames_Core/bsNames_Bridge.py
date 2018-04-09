@@ -12,6 +12,7 @@ class bsNamesBridge(object):
 		self.core = bsNamer()
 		self.window = window
 		self.window.btn_duplicate.clicked.connect(self.duplicate)
+		#self.window.btn_duplicate.setStyleSheet("background-color: red")
 
 		self.bsList = {}
 		BSfile = self.getFile('/bs_list.mkf')
