@@ -6,6 +6,7 @@ class bsNamer(object):
 		
 	def main(self, dictBS):
 		bsList = self.dupBS(dictBS)
+		return bsList
 		#self.checkHierarchy()
 
 	def getMainMesh(self):
@@ -25,14 +26,16 @@ class bsNamer(object):
 		mainMesh = self.getMainMesh()
 		for mesh, coords in dictBS.iteritems():
 			newBS = cmds.duplicate(mainMesh, n=mesh)[0]
+
 			bsList.append(newBS)
 
 			cmds.setAttr(newBS + '.translateX', int(coords[0]))
 			cmds.setAttr(newBS + '.translateY', int(coords[1]))
 
+		
 		cmds.group(bsList, n='GRP_BLENDSHAPES')
-		return bsList
 
+		return bsList
 
 	def checkHierarchy(self):
 		'''
@@ -62,3 +65,41 @@ class bsNamer(object):
 				cmds.select(cl=True)
 				cmds.parent(meshParent, grpGeo)
 		
+
+	def separateBS(self, blends, attr, value, sign):
+		
+		bsList = []
+		clampX = 15
+
+		for  bs, coords in blends.iteritems():
+			if bs.find('ROOT_BS') == -1:
+				bsList.append((bs, int(coords[0]), int(coords[1])))
+
+		bsList = sorted(bsList, key = lambda x: (-x[2], x[1]))
+		
+
+		x = 0
+
+		for index, bs in enumerate(bsList):
+			currentPos = cmds.getAttr(bs[0] + attr)
+
+			if attr == '.translateX':
+				if currentPos == 25:
+					x = 0
+
+				newPos = cmds.setAttr(bs[0] + attr, currentPos + x)
+				x += value * sign
+
+			if attr == '.translateY':
+				if currentPos == 15:
+					x = 0
+				
+				curr = bs
+
+
+				if index > 0 and curr[2] != bsList[index - 1][2]:
+					x += value * sign
+
+				newPos = cmds.setAttr(bs[0] + attr, currentPos - x)
+
+
